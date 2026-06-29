@@ -156,12 +156,20 @@
         <div class="success-panel" id="success-panel">
           <div class="icon">🎉</div>
           <h2>已收到!</h2>
-          <p>你的 Excel 已成功上傳,Receipt Flash 團隊會盡快處理。</p>
+          <p>你嘅 Excel 上傳成功,而家處理緊。</p>
           <div class="success-id">
-            <strong id="success-id">REF# RF-000000</strong>
-            📧 報告生成後會第一時間 email 給你。<br>
-            <span style="font-size:11px;color:var(--muted);">一般 1-2 小時內完成,緊急可聯絡做單快快團隊。</span>
+            <strong>REF# <span id="success-id">RF-000000</span></strong>
           </div>
+
+          <div class="success-url" style="margin: var(--space-4) auto; max-width: 360px; padding: var(--space-3) var(--space-4); border: 1.5px dashed var(--ink); border-radius: 10px; background: rgba(212, 255, 0, 0.12);">
+            <small style="display:block; font-size: 11px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">報告連結</small>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <code id="report-url" style="flex: 1; font-family: 'SF Mono', Menlo, monospace; font-size: 13px; background: white; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">receiptflash.com/r/...</code>
+              <button type="button" class="copy-btn" id="copy-url-btn" onclick="copyReportUrl()" style="padding: 6px 12px; font-size: 12px; font-weight: 700; background: var(--ink); color: white; border: none; border-radius: 6px; cursor: pointer; flex-shrink: 0;">📋 Copy</button>
+            </div>
+            <small style="display:block; font-size: 11px; color: var(--muted); margin-top: 8px;">⏳ 通常 30 秒內 email 寄到,link 就會 work</small>
+          </div>
+
           <button class="btn btn-blue" onclick="resetForm()">✅ 完成,再上傳一個</button>
         </div>
 
@@ -317,7 +325,9 @@
       if (!res.ok) throw new Error('upload failed');
       const data = await res.json();
       if (!data.success) throw new Error('server error');
-      document.getElementById('success-id').textContent = 'REF# ' + data.ref;
+      const ref = data.ref;
+      document.getElementById('success-id').textContent = ref;
+      document.getElementById('report-url').textContent = 'receiptflash.com/r/' + ref;
     } catch (err) {
       overlay.classList.remove('show');
       alert('上傳失敗,請稍後再試,或聯絡做單快快團隊。');
@@ -337,6 +347,27 @@
     document.getElementById('notes').value = '';
     document.getElementById('upload-form').style.display = 'block';
     document.getElementById('success-panel').classList.remove('show');
+  }
+
+  async function copyReportUrl() {
+    const url = 'https://' + document.getElementById('report-url').textContent;
+    const btn = document.getElementById('copy-url-btn');
+    const original = btn.textContent;
+    try {
+      await navigator.clipboard.writeText(url);
+      btn.textContent = '✅ Copied';
+    } catch (e) {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = url;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); btn.textContent = '✅ Copied'; } catch (_) { btn.textContent = '❌ Fail'; }
+      document.body.removeChild(ta);
+    }
+    setTimeout(() => { btn.textContent = original; }, 1500);
   }
 </script>
 </body>
