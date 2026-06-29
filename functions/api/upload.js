@@ -1,6 +1,6 @@
 // Cloudflare Pages Function: /api/upload
 // Receives FormData (file + email + name + project + notes),
-// stores in R2, sends Discord webhook notification.
+// stores in R2. Supports .xlsx, .xls, .zip (zip may contain xlsx + photos/).
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -37,57 +37,80 @@ export async function onRequestPost(context) {
       return jsonResponse({ success: false, error: 'Invalid email' }, 400);
     }
 
-    const allowedExts = ['.xlsx', '.xls'];
+    const allowedExts = ['.xlsx', '.xls', '.zip'];
     const fileName = file.name || '';
     const ext = fileName.toLowerCase().slice(fileName.lastIndexOf('.'));
     if (!allowedExts.includes(ext)) {
-      return jsonResponse({ success: false, error: 'Only .xlsx / .xls allowed' }, 400);
+      return jsonResponse({ success: false, error: 'Only .xlsx / .xls / .zip allowed' }, 400);
     }
 
     // Reference ID
     const ref = 'RF-' + Date.now().toString(36).toUpperCase().slice(-6);
+    const dateStr = new Date().toISOString().slice(0, 10);
+    const safeFileName = fileName.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+    const basePrefix = `uploads/${dateStr}/${ref}`;
 
-    // Sanitize file name for storage
-    const safeName = fileName.replace(/[^a-zA-Z0-9.\-_]/g, '_');
-    const key = `uploads/${new Date().toISOString().slice(0, 10)}/${ref}-${safeName}`;
+    let storedFiles = [];
+    let isZip = false;
 
-    // Upload to R2
-    let fileKey = null;
-    if (env.RECEIPTS_BUCKET) {
-      await env.RECEIPTS_BUCKET.put(key, file.stream(), {
-        httpMetadata: {
-          contentType: file.type || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        },
-        customMetadata: {
-          email,
-          name,
-          project,
-          notes,
-          originalName: fileName,
-          uploadedAt: new Date().toISOString(),
-          ref,
-        },
-      });
-      fileKey = key;
+    if (ext === '.zip') {
+      isZip = true;
+      // Try to unzip and store contents
+      try {
+        const zipData = new Uint8Array(await file.arrayBuffer());
+        // Use a simple zip library or built-in DecompressionStream if available
+        // Cloudflare Workers/Pages have DecompressionStream for raw deflate but not zip
+        // So we store the zip as-is and let the pipeline unzip later
+        if (env.RECEIPTS_BUCKET) {
+          await env.RECEIPTS_BUCKET.put(`${basePrefix}/${safeFileName}`, file.stream(), {
+            httpMetadata: {
+              contentType: 'application/zip',
+            },
+            customMetadata: {
+              email, name, project, notes, originalName: fileName, uploadedAt: new Date().toISOString(), ref, isZip: 'true',
+            },
+          });
+          storedFiles.push(`${basePrefix}/${safeFileName}`);
+        }
+      } catch (err) {
+        return jsonResponse({ success: false, error: 'Failed to process zip: ' + err.message }, 400);
+      }
+    } else {
+      // Single Excel file
+      const safeName = safeFileName;
+      const key = `${basePrefix}/${safeName}`;
+      if (env.RECEIPTS_BUCKET) {
+        await env.RECEIPTS_BUCKET.put(key, file.stream(), {
+          httpMetadata: {
+            contentType: file.type || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          },
+          customMetadata: {
+            email, name, project, notes, originalName: fileName, uploadedAt: new Date().toISOString(), ref, isZip: 'false',
+          },
+        });
+        storedFiles.push(key);
+      }
     }
 
-    // Send Discord webhook notification (fire-and-forget)
+    // Send Discord webhook notification
     if (env.DISCORD_WEBHOOK_URL) {
       const discordPayload = {
         embeds: [{
-          title: `📥 New Receipt Flash upload — ${ref}`,
-          color: 0x2e75b6,
+          title: `⚡ ReceiptFlash 新單`,
+          color: 0xD4FF00,
           fields: [
-            { name: 'Email', value: email || '—', inline: true },
-            { name: 'Name', value: name || '—', inline: true },
-            { name: 'Project', value: project || '—', inline: true },
-            { name: 'File', value: fileName, inline: false },
-            { name: 'Size', value: formatSize(file.size), inline: true },
-            { name: 'Notes', value: notes || '—', inline: false },
-            { name: 'R2 Key', value: fileKey || '(not stored — R2 not bound)', inline: false },
+            { name: '🔖 REF', value: ref, inline: true },
+            { name: '📎 檔案', value: fileName, inline: true },
+            { name: '📐 大小', value: formatSize(file.size), inline: true },
+            { name: '📦 類型', value: isZip ? 'ZIP (多檔打包)' : 'Excel', inline: true },
+            { name: '📧 電郵', value: email || '（未填）', inline: false },
+            { name: '👤 名字', value: name || '（未填）', inline: true },
+            { name: '🎬 專案', value: project || '（未填）', inline: true },
+            { name: '📝 備註', value: notes || '（無）', inline: false },
+            { name: '☁️ R2 路徑', value: storedFiles.join('\n') || '(not stored)', inline: false },
           ],
           timestamp: new Date().toISOString(),
-          footer: { text: 'Receipt Flash' },
+          footer: { text: 'ReceiptFlash' },
         }],
       };
       context.waitUntil(
@@ -102,8 +125,11 @@ export async function onRequestPost(context) {
     return jsonResponse({
       success: true,
       ref,
-      fileKey,
-      message: 'Upload received. We will email you when the report is ready.',
+      isZip,
+      storedFiles,
+      message: isZip
+        ? 'Zip uploaded. We will extract Excel + photos and email you the report.'
+        : 'Upload received. We will email you when the report is ready.',
     });
   } catch (err) {
     return jsonResponse({ success: false, error: String(err.message || err) }, 500);

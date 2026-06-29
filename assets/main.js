@@ -1,10 +1,10 @@
-// ===== ReceiptFlash 共用 JS =====
+// ===== ReceiptFlash 共用 JS — Neo-Brutalist Style =====
 
 (function() {
   const NAV_ITEMS = [
     { href: '/', label: '首頁', match: /^\/(index\.html)?$/ },
     { href: '/about.html', label: '關於我們', match: /^\/about\.html$/ },
-    { href: '/blog/', label: '部落格', match: /^\/blog\/?$/ },
+    { href: '/blog/', label: '教學', match: /^\/blog\/?$/ },
   ];
 
   function renderHeader() {
@@ -16,16 +16,16 @@
 
     return `
       <header class="site-header">
-        <div class="container">
+        <div class="container" style="display:flex;justify-content:space-between;align-items:center;width:100%;">
           <a class="brand" href="/">
-            <div class="brand-icon">⚡</div>
+            <div class="brand-mark"></div>
             <div>
-              <div class="brand-text">做單快快 Receipt Flash</div>
+              <div class="brand-text">ReceiptFlash</div>
               <div class="brand-sub">現金實支報告</div>
             </div>
           </a>
-          <nav class="nav" id="main-nav">${navHTML}</nav>
-          <button class="nav-toggle" id="nav-toggle" aria-label="選單">☰</button>
+          <nav class="nav-pill">${navHTML}</nav>
+          <a class="cta-nav" href="https://receiptflash.com/#upload">免費試用 →</a>
         </div>
       </header>
     `;
@@ -34,13 +34,18 @@
   function renderFooter() {
     return `
       <footer class="site-footer">
-        <div class="container">
+        <div class="footer-grid">
           <div>
-            <div class="brand-mini">
-              <div class="brand-icon">⚡</div>
-              <div class="brand-text" style="color:white;">Receipt Flash</div>
-            </div>
-            <p>專為港澳影視製作行業設計的現金支出報告工具。<br>上傳 Excel,30 秒出專業報告。</p>
+            <a class="brand" href="/" style="color: var(--yellow);">
+              <div class="brand-mark"></div>
+              <div>
+                <div class="brand-text">ReceiptFlash</div>
+                <div class="brand-sub">現金實支報告</div>
+              </div>
+            </a>
+            <p style="margin-top: 16px; color: #B0B0B0; font-size: 14px; max-width: 280px;">
+              專為港澳影視製作行業設計。<br>上傳 Excel,30 秒出專業報告。
+            </p>
           </div>
           <div>
             <h4>產品</h4>
@@ -63,9 +68,10 @@
               <li><a href="/terms.html">服務條款</a></li>
             </ul>
           </div>
-          <div class="footer-bottom">
-            © 2026 Receipt Flash. Powered by Cloudflare.
-          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 Receipt Flash. All rights reserved.</span>
+          <span>Powered by Cloudflare.</span>
         </div>
       </footer>
     `;

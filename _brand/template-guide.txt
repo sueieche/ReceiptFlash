@@ -1,5 +1,19 @@
 # Receipt Flash Excel 模板欄位指南
 
+## 支援 .zip 多檔打包
+如果你嘅 Excel 內嵌唔落咁多單據照片，可以將 Excel 同 photos 打包成 .zip：
+
+```
+upload.zip
+├── Galaxy_202606.xlsx      ← 必須
+└── photos/                  ← 選用
+    ├── receipt_01.jpg
+    ├── receipt_02.jpg
+    └── ...
+```
+
+Pipeline 會自動拆 zip + 配對 Excel row 同 photos folder 內對應名稱嘅圖片。
+
 ## 必要欄位（順序不限）
 | 欄位名 | 格式 | 範例 |
 |--------|------|------|
@@ -17,6 +31,7 @@
 | 2026-06-05 | 餐飲 | 工作人員便當 | 480 | (貼單據圖) |
 
 ## 注意
-- 必須 .xlsx 或 .xls
-- 單據圖片直接嵌入儲存格（Insert Comment 不接受）
+- 必須 .xlsx、.xls 或 .zip
+- 單據圖片可以直接嵌入 Excel 儲存格（Insert Comment 不接受）
+- 或者將 photos 收埋喺 zip
 - 最多 200 行，超出請分檔上傳
