@@ -1,28 +1,28 @@
 // Cloudflare Pages Function: /api/upload
 // Receives FormData (file + email + name + project + notes),
-// stores in R2 stub, sends Discord webhook notification.
+// stores in R2, sends Discord webhook notification.
 
 export async function onRequestPost(context) {
   const { request, env } = context;
 
-  // CORS
+  // CORS preflight
   if (request.method === 'OPTIONS') {
     return new Response(null, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
-      }
+      },
     });
   }
 
   try {
     const formData = await request.formData();
     const file = formData.get('file');
-    const email = formData.get('email') || '';
-    const name = formData.get('name') || '';
-    const project = formData.get('project') || '';
-    const notes = formData.get('notes') || '';
+    const email = (formData.get('email') || '').toString().trim();
+    const name = (formData.get('name') || '').toString().trim();
+    const project = (formData.get('project') || '').toString().trim();
+    const notes = (formData.get('notes') || '').toString().trim();
 
     if (!file || !(file instanceof File)) {
       return jsonResponse({ success: false, error: 'No file uploaded' }, 400);
@@ -32,7 +32,11 @@ export async function onRequestPost(context) {
       return jsonResponse({ success: false, error: 'Email required' }, 400);
     }
 
-    // Validate file type
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!emailOk) {
+      return jsonResponse({ success: false, error: 'Invalid email' }, 400);
+    }
+
     const allowedExts = ['.xlsx', '.xls'];
     const fileName = file.name || '';
     const ext = fileName.toLowerCase().slice(fileName.lastIndexOf('.'));
@@ -40,52 +44,69 @@ export async function onRequestPost(context) {
       return jsonResponse({ success: false, error: 'Only .xlsx / .xls allowed' }, 400);
     }
 
-    // Generate reference ID
-    const ref = 'RF-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+    // Reference ID
+    const ref = 'RF-' + Date.now().toString(36).toUpperCase().slice(-6);
 
-    // Upload to R2 if bound
+    // Sanitize file name for storage
+    const safeName = fileName.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+    const key = `uploads/${new Date().toISOString().slice(0, 10)}/${ref}-${safeName}`;
+
+    // Upload to R2
+    let fileKey = null;
     if (env.RECEIPTS_BUCKET) {
-      const key = `${new Date().toISOString().slice(0, 10)}/${ref}/${fileName}`;
       await env.RECEIPTS_BUCKET.put(key, file.stream(), {
-        httpMetadata: { contentType: file.type || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
-        customMetadata: { email, name, project, notes, ref }
+        httpMetadata: {
+          contentType: file.type || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        },
+        customMetadata: {
+          email,
+          name,
+          project,
+          notes,
+          originalName: fileName,
+          uploadedAt: new Date().toISOString(),
+          ref,
+        },
       });
+      fileKey = key;
     }
 
-    // Send Discord notification if webhook bound
+    // Send Discord webhook notification (fire-and-forget)
     if (env.DISCORD_WEBHOOK_URL) {
       const discordPayload = {
         embeds: [{
-          title: `📥 New upload: ${ref}`,
+          title: `⚡ ReceiptFlash 新單`,
           color: 0x2e75b6,
           fields: [
-            { name: 'Email', value: email, inline: true },
-            { name: 'Name', value: name || '—', inline: true },
-            { name: 'Project', value: project || '—', inline: true },
-            { name: 'File', value: fileName, inline: false },
-            { name: 'Size', value: formatSize(file.size), inline: true },
-            { name: 'Notes', value: notes || '—', inline: false }
+            { name: '🔖 REF', value: ref, inline: true },
+            { name: '📎 檔案', value: fileName, inline: true },
+            { name: '📐 大小', value: formatSize(file.size), inline: true },
+            { name: '📧 電郵', value: email || '（未填）', inline: false },
+            { name: '👤 名字', value: name || '（未填）', inline: true },
+            { name: '🎬 專案', value: project || '（未填）', inline: true },
+            { name: '📝 備註', value: notes || '（無）', inline: false },
           ],
-          timestamp: new Date().toISOString()
-        }]
+          timestamp: new Date().toISOString(),
+          footer: { text: 'ReceiptFlash' },
+        }],
       };
-      // Fire-and-forget
       context.waitUntil(
         fetch(env.DISCORD_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(discordPayload)
-        }).catch(() => {})
+          body: JSON.stringify(discordPayload),
+        }).catch((err) => console.error('Discord webhook failed:', err))
       );
     }
 
     return jsonResponse({
       success: true,
       ref,
-      message: 'Upload received. We will email you when the report is ready.'
+      fileKey,
+      message: 'Upload received. We will email you when the report is ready.',
     });
   } catch (err) {
-    return jsonResponse({ success: false, error: err.message }, 500);
+    return jsonResponse({ success: false, error: String(err.message || err) }, 500);
   }
 }
 
@@ -95,7 +116,7 @@ export async function onRequestOptions() {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
-    }
+    },
   });
 }
 
@@ -104,8 +125,8 @@ function jsonResponse(data, status = 200) {
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    }
+      'Access-Control-Allow-Origin': '*',
+    },
   });
 }
 
