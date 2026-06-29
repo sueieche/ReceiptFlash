@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <linearGradient id="left-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fee2e2"/>
+      <stop offset="100%" stop-color="#fecaca"/>
+    </linearGradient>
+    <linearGradient id="right-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dcfce7"/>
+      <stop offset="100%" stop-color="#bbf7d0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- LEFT: Excel 跑版 -->
+  <rect x="20" y="40" width="360" height="320" rx="12" fill="url(#left-bg)" stroke="#dc2626" stroke-width="2"/>
+  <text x="200" y="30" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="16" font-weight="700" fill="#dc2626">❌ Excel 直接轉 PDF</text>
+
+  <!-- 模擬一個 Excel sheet 跑版 -->
+  <rect x="40" y="60" width="320" height="280" rx="4" fill="#fff" stroke="#dc2626" stroke-width="1.5"/>
+  <!-- 表頭 -->
+  <rect x="40" y="60" width="320" height="22" fill="#1d6f42"/>
+  <text x="50" y="76" font-family="monospace" font-size="11" fill="#fff" font-weight="600">日期 | 描述 | 金額 | 單據</text>
+  <!-- Row 1 -->
+  <text x="50" y="100" font-family="monospace" font-size="10" fill="#1a1a2e">2026-06-01 | Sony A7S</text>
+  <text x="100" y="118" font-family="monospace" font-size="10" fill="#dc2626" font-weight="700">[被切]</text>
+  <line x1="240" y1="80" x2="280" y2="120" stroke="#dc2626" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="220" y="140" font-family="sans-serif" font-size="11" fill="#dc2626" font-weight="700">$1200 [cut]</text>
+  <!-- 單據格 -->
+  <rect x="240" y="100" width="100" height="50" fill="#fee2e2" stroke="#dc2626" stroke-dasharray="3,2"/>
+  <text x="290" y="130" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#dc2626">單據圖超出邊界</text>
+  <!-- Row 2 (cut by page) -->
+  <line x1="50" y1="170" x2="350" y2="170" stroke="#dc2626" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="200" y="166" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#dc2626">— — — 第 1 頁結束 — — —</text>
+  <text x="50" y="195" font-family="monospace" font-size="10" fill="#dc2626">2026-06-03 | 場地租金 | $5000</text>
+  <text x="50" y="218" font-family="monospace" font-size="10" fill="#dc2626">2026-06-05 | 便當</text>
+  <text x="290" y="218" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">[切到第 2 頁]</text>
+  <rect x="240" y="240" width="100" height="60" fill="#fee2e2" stroke="#dc2626" stroke-dasharray="3,2"/>
+  <text x="290" y="275" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#dc2626">圖片變形</text>
+
+  <!-- 底部警告 -->
+  <rect x="40" y="305" width="320" height="24" rx="4" fill="#dc2626"/>
+  <text x="200" y="321" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#fff" font-weight="700">⚠ 跑版 · 切字 · 圖片超出邊界</text>
+
+  <!-- VS / Arrow -->
+  <g transform="translate(400, 200)">
+    <circle r="28" fill="#1a1a2e"/>
+    <text y="6" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="800" fill="#fff">VS</text>
+  </g>
+
+  <!-- RIGHT: Receipt Flash 報告 -->
+  <rect x="420" y="40" width="360" height="320" rx="12" fill="url(#right-bg)" stroke="#16a34a" stroke-width="2"/>
+  <text x="600" y="30" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="16" font-weight="700" fill="#16a34a">✅ Receipt Flash 報告</text>
+
+  <rect x="440" y="60" width="320" height="280" rx="4" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+  <!-- Header -->
+  <rect x="440" y="60" width="320" height="32" fill="#2e75b6"/>
+  <text x="600" y="80" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#fff" font-weight="700">⚡ 現金支出報告 #RF-2026-06</text>
+
+  <!-- Row 1 -->
+  <text x="450" y="110" font-family="monospace" font-size="10" fill="#1a1a2e">2026-06-01</text>
+  <text x="510" y="110" font-family="monospace" font-size="10" fill="#1a1a2e">Sony A7S III 租金</text>
+  <text x="660" y="110" font-family="monospace" font-size="10" fill="#1a1a2e" font-weight="700">$1,200</text>
+  <rect x="700" y="100" width="50" height="22" rx="2" fill="#e8f2fb" stroke="#2e75b6"/>
+  <text x="725" y="115" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#2e75b6">📷</text>
+  <!-- Row 2 -->
+  <text x="450" y="135" font-family="monospace" font-size="10" fill="#1a1a2e">2026-06-03</text>
+  <text x="510" y="135" font-family="monospace" font-size="10" fill="#1a1a2e">拍攝場地租金</text>
+  <text x="660" y="135" font-family="monospace" font-size="10" fill="#1a1a2e" font-weight="700">$5,000</text>
+  <rect x="700" y="125" width="50" height="22" rx="2" fill="#e8f2fb" stroke="#2e75b6"/>
+  <text x="725" y="140" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#2e75b6">📷</text>
+  <!-- Row 3 -->
+  <text x="450" y="160" font-family="monospace" font-size="10" fill="#1a1a2e">2026-06-05</text>
+  <text x="510" y="160" font-family="monospace" font-size="10" fill="#1a1a2e">工作人員便當</text>
+  <text x="660" y="160" font-family="monospace" font-size="10" fill="#1a1a2e" font-weight="700">$480</text>
+  <rect x="700" y="150" width="50" height="22" rx="2" fill="#e8f2fb" stroke="#2e75b6"/>
+  <text x="725" y="165" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#2e75b6">📷</text>
+
+  <line x1="450" y1="180" x2="750" y2="180" stroke="#e2e4ec" stroke-width="1"/>
+  <text x="450" y="200" font-family="sans-serif" font-size="10" fill="#5a5a7a">合計</text>
+  <text x="725" y="200" text-anchor="end" font-family="monospace" font-size="13" fill="#16a34a" font-weight="700">$6,680</text>
+
+  <!-- Footer meta -->
+  <rect x="440" y="220" width="320" height="60" rx="4" fill="#f7f8fa"/>
+  <text x="450" y="240" font-family="sans-serif" font-size="9" fill="#9494b0">報告連結</text>
+  <text x="450" y="258" font-family="monospace" font-size="10" fill="#2e75b6">receiptflash.com/r/RF-2026-06</text>
+  <text x="450" y="275" font-family="sans-serif" font-size="9" fill="#9494b0">雲端保留 30 天 · 點擊直開 · 可列印 PDF</text>
+
+  <!-- 底部 ok -->
+  <rect x="440" y="305" width="320" height="24" rx="4" fill="#16a34a"/>
+  <text x="600" y="321" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#fff" font-weight="700">✓ 排版乾淨 · 不跑版 · 30 秒完成</text>
+</svg>

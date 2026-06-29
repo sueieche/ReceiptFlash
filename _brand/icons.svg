@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+  <defs>
+    <symbol id="icon-excel" viewBox="0 0 64 64">
+      <rect x="6" y="6" width="52" height="52" rx="8" fill="#1d6f42"/>
+      <rect x="10" y="10" width="44" height="44" rx="4" fill="#21a366"/>
+      <path d="M22 24h20M22 32h20M22 40h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="32" y="56" text-anchor="middle" font-size="9" fill="#fff" font-weight="700">XLS</text>
+    </symbol>
+    <symbol id="icon-upload" viewBox="0 0 64 64">
+      <path d="M14 40v8a4 4 0 004 4h28a4 4 0 004-4v-8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M32 38V14M22 24l10-10 10 10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-shield" viewBox="0 0 64 64">
+      <path d="M32 6L10 14v18c0 14 9 22 22 26 13-4 22-12 22-26V14L32 6z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M22 32l8 8 14-14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-cloud" viewBox="0 0 64 64">
+      <path d="M18 46a12 12 0 010-24 16 16 0 0130-2 10 10 0 014 26H18z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-clock" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="3"/>
+      <path d="M32 18v14l10 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-share" viewBox="0 0 64 64">
+      <circle cx="14" cy="32" r="6" fill="none" stroke="currentColor" stroke-width="3"/>
+      <circle cx="50" cy="14" r="6" fill="none" stroke="currentColor" stroke-width="3"/>
+      <circle cx="50" cy="50" r="6" fill="none" stroke="currentColor" stroke-width="3"/>
+      <path d="M20 28l24-12M20 36l24 12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>

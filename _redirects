@@ -1,0 +1,3 @@
+# Cloudflare Pages auto-canonicalizes .html extension.
+# Keep the default behavior; users see /about, /blog, etc.
+# (No custom rules needed.)

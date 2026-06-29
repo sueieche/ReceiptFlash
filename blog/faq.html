@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReceiptFlash 安全嗎?Excel 線上轉檔常見問題與資安說明 | Receipt Flash</title>
+<meta name="description" content="線上 Excel 轉檔工具安全嗎?本文說明 Receipt Flash 的資安措施,以及使用者最常問的問題。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ReceiptFlash 安全嗎?Excel 線上轉檔常見問題與資安說明 | Receipt Flash">
+<meta property="og:description" content="線上 Excel 轉檔工具安全嗎?本文說明 Receipt Flash 的資安措施,以及使用者最常問的問題。">
+<meta property="og:image" content="https://receiptflash.com/_brand/og-image.svg">
+<meta property="og:url" content="https://receiptflash.com/blog/faq.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ReceiptFlash 安全嗎?Excel 線上轉檔常見問題與資安說明 | Receipt Flash">
+<meta name="twitter:description" content="線上 Excel 轉檔工具安全嗎?本文說明 Receipt Flash 的資安措施,以及使用者最常問的問題。">
+<meta name="twitter:image" content="https://receiptflash.com/_brand/og-image.svg">
+<link rel="icon" type="image/svg+xml" href="../_brand/favicon.svg">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<main>
+  <div class="container narrow">
+    <article class="article">
+      <h1>ReceiptFlash 安全嗎?Excel 線上轉檔常見問題與資安說明</h1>
+      <p class="meta">2026 年 6 月 27 日 · 閱讀時間 5 分鐘</p>
+
+      <p>把公司財務報表上傳到網路上,是不是很危險?這篇文章回答你最關心的資安問題,以及使用 Receipt Flash 之前你應該知道的事。</p>
+
+      <div class="toc">
+        <h4>📑 文章目錄</h4>
+        <ul>
+          <li><a href="#privacy">隱私保護</a></li>
+          <li><a href="#security">資安措施</a></li>
+          <li><a href="#formats">支援格式</a></li>
+          <li><a href="#use">適合誰用</a></li>
+          <li><a href="#faq">常見問題 FAQ</a></li>
+        </ul>
+      </div>
+
+      <h2 id="privacy">隱私保護</h2>
+
+      <h3>檔案上傳後保留多久?</h3>
+      <p>你的 Excel 檔案和生成的報告,預設保留 <strong>30 天</strong>後自動從我們的伺服器刪除。如果你需要提前刪除,email 給 <a href="mailto:privacy@receiptflash.com">privacy@receiptflash.com</a>,我們會在 7 個工作天內處理。</p>
+
+      <h3>你們會看我的檔案嗎?</h3>
+      <p><strong>不會。</strong> 我們的系統是全自動 pipeline,沒有人工介入。從上傳、處理、生成報告、發送通知,全部由程式自動完成。我們的工程師看不到、也不會去查看你的 Excel 內容。</p>
+      <p>唯一例外:如果你主動聯絡我們並提供授權,讓我們協助 debug(例如「我的報表格式跑掉了,幫我看一下」),我們才會打開你的檔案。這種情況我們會:</p>
+      <ul>
+        <li>明確告知你會查看</li>
+        <li>只查看必要的部分</li>
+        <li>查看後立即關閉,不留副本</li>
+        <li>處理完通知你</li>
+      </ul>
+
+      <h3>你們會把資料賣給第三方嗎?</h3>
+      <p><strong>不會。</strong> 我們不出售、租賃、分享你的個人資料給第三方。我們只把資料用在以下情況:</p>
+      <ul>
+        <li>提供你請求的服務(處理 Excel、生成報告)</li>
+        <li>回應你的查詢、技術支援請求</li>
+        <li>符合法律義務(例如法院命令)</li>
+        <li>業務移轉(如果我們被併購)</li>
+      </ul>
+
+      <h3>你們會用我的資料訓練 AI 嗎?</h3>
+      <p><strong>不會。</strong> 你的 Excel 內容不會被用來訓練任何 AI 模型,包括我們自己的或第三方的。</p>
+
+      <h2 id="security">資安措施</h2>
+
+      <h3>資料存放在哪裡?</h3>
+      <p>你的檔案儲存在 <strong>Cloudflare R2</strong>,這是一個全球分散式的物件儲存服務:</p>
+      <ul>
+        <li><strong>全球分散節點</strong>:檔案複製到多個地理位置,單點故障不影響存取</li>
+        <li><strong>SOC 2 Type II 合規</strong>:Cloudflare 通過國際資安稽核</li>
+        <li><strong>ISO 27001 認證</strong>:資訊安全管理國際標準</li>
+        <li><strong>GDPR 合規</strong>:符合歐盟個資法</li>
+      </ul>
+
+      <h3>傳輸安全嗎?</h3>
+      <p>所有資料透過 <strong>HTTPS / TLS 1.3</strong> 加密傳輸。我們的 SSL 憑證由 Cloudflare 提供,現代瀏覽器都會顯示綠色鎖頭。</p>
+
+      <h3>誰能存取我的檔案?</h3>
+      <p>只有 <strong>授權的 Receipt Flash 工程師</strong> 在緊急情況下(例如系統故障需要 debug)才能存取,並且:</p>
+      <ul>
+        <li>存取需要二次驗證(2FA)</li>
+        <li>所有存取都有日誌記錄</li>
+        <li>最小權限原則(只能讀,不能刪)</li>
+      </ul>
+
+      <h3>密碼怎麼設定?</h3>
+      <p>本服務不需要註冊帳號,使用 email 即可提交。生成的報告連結預設沒有密碼保護,但你可以:</p>
+      <ul>
+        <li>設定時效(7 天後失效)</li>
+        <li>設定密碼(之後推出)</li>
+        <li>限定特定 email 才能看(之後推出)</li>
+      </ul>
+
+      <h2 id="formats">支援格式</h2>
+
+      <h3>Excel 格式</h3>
+      <p>我們支援:</p>
+      <ul>
+        <li>✅ .xlsx(Excel 2007 之後的格式,推薦)</li>
+        <li>✅ .xls(Excel 2003 之前的格式)</li>
+        <li>⚠️ .xlsm(帶巨集的 Excel)——目前會去掉巨集後處理</li>
+        <li>❌ .csv —— 請先另存成 .xlsx</li>
+        <li>❌ Google Sheets —— 請先下載成 .xlsx</li>
+      </ul>
+
+      <h3>Excel 內容</h3>
+      <p>支援的元素:</p>
+      <ul>
+        <li>✅ 文字、數字、日期</li>
+        <li>✅ 公式(會轉成計算後的值)</li>
+        <li>✅ 嵌入的圖片(單據照片)</li>
+        <li>✅ 多張工作表(目前只處理第一張)</li>
+        <li>⚠️ 樞紐分析表 —— 會展開成一般表格</li>
+        <li>⚠️ 巨集、VBA —— 不支援</li>
+      </ul>
+
+      <h3>輸出格式</h3>
+      <p>我們生成的報告:</p>
+      <ul>
+        <li>✅ Web Link(預設,可以瀏覽器查看)</li>
+        <li>✅ 可下載為 HTML(離線查看)</li>
+        <li>✅ 可列印為 PDF(瀏覽器內建列印功能)</li>
+      </ul>
+
+      <h2 id="use">適合誰用</h2>
+
+      <h3>個人用戶</h3>
+      <ul>
+        <li>接案者(Freelancer、攝影師、造型師)</li>
+        <li>小型工作室</li>
+        <li>個人投資者(整理投資支出)</li>
+      </ul>
+
+      <h3>中小企業</h3>
+      <ul>
+        <li>廣告 agency(媒體購買、製作)</li>
+        <li>影視製作公司</li>
+        <li>活動公司(婚禮、活動、展覽)</li>
+        <li>電商賣家(每月出貨報帳)</li>
+      </ul>
+
+      <div class="ad-slot" data-ad="in-article-blog"></div>
+
+      <h3>大型企業</h3>
+      <p>大型企業通常有自己的報表系統和 ERP,可能不太適合。但如果你們的子公司、小部門、專案團隊需要快速產出現金支出報告,Receipt Flash 是個好選擇。</p>
+
+      <h3>不適合的場景</h3>
+      <p>以下情況請考慮其他工具:</p>
+      <ul>
+        <li>❌ 需要即時多人協作編輯(用 Google Sheets)</li>
+        <li>❌ 需要 ERP / 會計軟體整合(用 QuickBooks、Xero)</li>
+        <li>❌ 報表需要 100% 自訂排版(用 Word + 手動排版)</li>
+      </ul>
+
+      <h2 id="faq">常見問題 FAQ</h2>
+
+      <div class="faq-item">
+        <h3>Q1:Receipt Flash 是免費的嗎?</h3>
+        <p>目前完全免費,沒有功能限制。之後會推出付費方案(自訂品牌、API 整合、批次上傳等),免費版會持續保留基本功能。</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Q2:我需要註冊帳號嗎?</h3>
+        <p>不用。直接打開網站、上傳檔案、提供 email 接收報告即可。</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Q3:上傳檔案大小有限制嗎?</h3>
+        <p>目前限制是 <strong>10 MB</strong>。如果你的報表很大(很多單據照片),建議先壓縮圖片,或分成多個檔案上傳。</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Q4:處理一份報表要多久?</h3>
+        <p>通常 <strong>1-3 分鐘</strong>,取決於檔案大小和圖片數量。我們收到檔案後會立刻開始處理,處理完成會 email 通知你。</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Q5:報告連結會失效嗎?</h3>
+        <p>預設 30 天後失效。如果需要更長或更短,可以聯絡我們調整。</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Q6:支援其他語言嗎?</h3>
+        <p>目前支援繁體中文、簡體中文、英文。Excel 內容用什麼語言都可以,我們會自動識別。</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Q7:可以批次處理多個檔案嗎?</h3>
+        <p>目前一次只能處理一個檔案。批次處理是未來付費版的功能。</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Q8:可以 API 串接嗎?</h3>
+        <p>目前沒有公開 API。未來會推出,適合企業用戶自動整合。</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Q9:遇到問題怎麼辦?</h3>
+        <p>Email <a href="mailto:support@receiptflash.com">support@receiptflash.com</a>,我們會在 1-2 個工作天內回覆。如果是緊急問題,Discord / WhatsApp 客服即將推出。</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Q10:你們會怎麼使用我的 email?</h3>
+        <p>只用於:</p>
+        <ul>
+          <li>發送報告連結給你</li>
+          <li>重要的服務通知(政策更新、重大功能)</li>
+        </ul>
+        <p>不會用於推廣、垃圾郵件、轉售給第三方。</p>
+      </div>
+
+      <div class="cta">
+        <p>還有其他問題?</p>
+        <p>Email: <a href="mailto:support@receiptflash.com">support@receiptflash.com</a></p>
+        <p style="margin-top: 16px;">或者直接試用:</p>
+        <a href="/" class="btn btn-accent">立即試用 Receipt Flash →</a>
+      </div>
+
+      <h2 id="more">延伸閱讀</h2>
+      <ul>
+        <li><a href="excel-to-pdf.html">Excel 轉 PDF 跑版?3 步驟完美轉換教學</a></li>
+        <li><a href="excel-to-web.html">Excel 轉 Web Link:數位化你的支出報告</a></li>
+        <li><a href="/privacy.html">隱私權政策</a></li>
+        <li><a href="/terms.html">服務條款</a></li>
+      </ul>
+    </article>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="../assets/main.js"></script>
+<script src="../_ads/adsense.js"></script>
+
+<!-- FAQ Schema.org JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Receipt Flash 是免費的嗎?","acceptedAnswer":{"@type":"Answer","text":"目前完全免費,沒有功能限制。之後會推出付費方案(自訂品牌、API 整合、批次上傳等),免費版會持續保留基本功能。"}},
+    {"@type":"Question","name":"我需要註冊帳號嗎?","acceptedAnswer":{"@type":"Answer","text":"不用。直接打開網站、上傳檔案、提供 email 接收報告即可。"}},
+    {"@type":"Question","name":"上傳檔案大小有限制嗎?","acceptedAnswer":{"@type":"Answer","text":"建議單檔 10MB 以下。超出請聯絡我們客製處理。"}},
+    {"@type":"Question","name":"處理一份報表要多久?","acceptedAnswer":{"@type":"Answer","text":"一般 1-2 小時內完成,緊急情況可聯絡 support@receiptflash.com 加快處理。"}},
+    {"@type":"Question","name":"報告連結會失效嗎?","acceptedAnswer":{"@type":"Answer","text":"報告連結預設 30 天有效,之後從 R2 刪除。"}},
+    {"@type":"Question","name":"支援其他語言嗎?","acceptedAnswer":{"@type":"Answer","text":"UI 介面目前繁體中文,未來會推出英文、簡體中文版。"}},
+    {"@type":"Question","name":"可以批次處理多個檔案嗎?","acceptedAnswer":{"@type":"Answer","text":"目前每次上傳一個檔案。批次處理是付費方案功能。"}},
+    {"@type":"Question","name":"可以 API 串接嗎?","acceptedAnswer":{"@type":"Answer","text":"API 串接是未來中期計劃,適合需要 ERP / 會計系統整合的企業用戶。"}},
+    {"@type":"Question","name":"遇到問題怎麼辦?","acceptedAnswer":{"@type":"Answer","text":"聯絡 support@receiptflash.com,我們會在 1-2 個工作天內回覆。"}},
+    {"@type":"Question","name":"你們會怎麼使用我的 email?","acceptedAnswer":{"@type":"Answer","text":"只用來寄報告連結和重要服務通知。絕不外傳、不做市場推廣。"}}
+  ]
+}
+</script>
+</body>
+</html>

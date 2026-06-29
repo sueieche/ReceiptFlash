@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excel 轉 PDF 跑版、被切兩半?3 步驟完美轉換不跑版教學 | Receipt Flash</title>
+<meta name="description" content="Excel 直接另存 PDF 經常遇到字體被切、表格被分到下一頁。本文解釋原因,並教 3 步驟完美轉換。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Excel 轉 PDF 跑版、被切兩半?3 步驟完美轉換不跑版教學 | Receipt Flash">
+<meta property="og:description" content="Excel 直接另存 PDF 經常遇到字體被切、表格被分到下一頁。本文解釋原因,並教 3 步驟完美轉換。">
+<meta property="og:image" content="https://receiptflash.com/_brand/og-image.svg">
+<meta property="og:url" content="https://receiptflash.com/blog/excel-to-pdf.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Excel 轉 PDF 跑版、被切兩半?3 步驟完美轉換不跑版教學 | Receipt Flash">
+<meta name="twitter:description" content="Excel 直接另存 PDF 經常遇到字體被切、表格被分到下一頁。本文解釋原因,並教 3 步驟完美轉換。">
+<meta name="twitter:image" content="https://receiptflash.com/_brand/og-image.svg">
+<link rel="icon" type="image/svg+xml" href="../_brand/favicon.svg">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<main>
+  <div class="container narrow">
+    <article class="article">
+      <h1>Excel 轉 PDF 跑版、被切兩半?3 步驟完美轉換不跑版教學</h1>
+      <p class="meta">2026 年 6 月 27 日 · 閱讀時間 6 分鐘</p>
+
+      <div class="toc">
+        <h4>📑 文章目錄</h4>
+        <ul>
+          <li><a href="#problem">為什麼 Excel 直接轉 PDF 會跑版?</a></li>
+          <li><a href="#why">跑版的 3 大原因</a></li>
+          <li><a href="#manual">傳統手動調整方法</a></li>
+          <li><a href="#solution">一鍵解決:用 Receipt Flash</a></li>
+          <li><a href="#faq">常見問題</a></li>
+        </ul>
+      </div>
+
+      <h2 id="problem">為什麼 Excel 直接轉 PDF 會跑版?</h2>
+      <p>如果你曾經把 Excel 另存成 PDF,大概都遇過這些情況:</p>
+      <ul>
+        <li>📄 <strong>字體被切到</strong>:一行字的最後幾個字消失,跑到下一頁</li>
+        <li>📊 <strong>表格被分頁</strong>:同一個表格橫跨第 3 頁和第 4 頁,中間斷開</li>
+        <li>🖼️ <strong>圖片縮放不對</strong>:單據照片塞到儲存格裡卻超出邊界</li>
+        <li>📐 <strong>邊界消失</strong>:原本留白的邊界,在 PDF 裡不見了</li>
+        <li>🔤 <strong>字型跑掉</strong>:PDF 裡的字跟 Excel 不一樣(尤其用特殊字型)</li>
+      </ul>
+      <p>這些問題在報告要交給客戶或老闆時特別尷尬——你看著那份「歪七扭八」的 PDF,內心只想把電腦砸掉。</p>
+      <p>好消息是:<strong>大部分跑版是可以避免的</strong>,只要理解 Excel 跟 PDF 不同的「分頁邏輯」。</p>
+
+      <h2 id="why">跑版的 3 大原因</h2>
+
+      <h3>原因 1:Excel 沒有「頁面」概念</h3>
+      <p>Excel 設計給螢幕閱讀,所以它沒有固定頁面大小。當你按「檔案 > 另存新檔 > PDF」時,Excel 會<strong>猜測</strong>你的內容該怎麼分頁——這個猜測通常很糟糕。</p>
+      <p>預設情況下,Excel 會用 A4 直式紙張,把所有內容「硬塞」進去,結果就是表格被切、字被截。</p>
+
+      <h3>原因 2:欄寬和列高不會自動調整</h3>
+      <p>當你改變字型、放大字號,或者插入圖片時,Excel 不會自動調整欄寬。在螢幕上看起來正常,在 PDF 裡就可能會超出邊界。</p>
+
+      <h3>原因 3:圖片不會跟著儲存格縮放</h3>
+      <p>如果你在 Excel 插入單據照片,預設照片是「浮在儲存格上方」,而不是「鎖在儲存格裡」。PDF 輸出時,照片位置可能會跑掉。</p>
+      <p>如果用「插入儲存格內」的方式,照片會跟著儲存格,但下載成 .xlsx 時可能變成一串文字(這是 Google Sheets 的另一個坑,我們在另一篇文章討論)。</p>
+
+      <div class="ad-slot" data-ad="in-article-blog"></div>
+
+      <div class="cta">
+        <p><strong>不想手動調整?</strong> Receipt Flash 一鍵幫你處理所有跑版問題。</p>
+        <a href="/" class="btn btn-accent">立即試用 Receipt Flash →</a>
+      </div>
+
+      <h2 id="manual">傳統手動調整方法</h2>
+      <p>如果你堅持要自己處理,有幾個 Excel 內建工具可以用:</p>
+
+      <h3>步驟 1:設定頁面大小</h3>
+      <p>到 <code>「版面配置 > 大小」</code>,選擇 A4 或 Letter。設定方向(直/橫)和縮放比例。</p>
+
+      <h3>步驟 2:調整邊界</h3>
+      <p>到 <code>「版面配置 > 邊界」</code>,選擇「窄」或自訂(上下左右各 1cm 左右)。邊界太寬會浪費空間,太窄會讓內容貼邊。</p>
+
+      <h3>步驟 3:使用「分頁預覽」</h3>
+      <p>到 <code>「檢視 > 分頁預覽」</code>,你會看到 Excel 自動插入的分頁線(藍色虛線)。你可以手動拖曳這些線,告訴 Excel「這裡換頁」。</p>
+
+      <h3>步驟 4:列印範圍設定</h3>
+      <p>選取你要列印的範圍,到 <code>「版面配置 > 列印範圍 > 設定列印範圍」</code>。這樣 PDF 只包含你選的部分。</p>
+
+      <h3>步驟 5:列印縮放</h3>
+      <p>到 <code>「檔案 > 列印」</code>,在「縮放比例」設定「適合頁面」,Excel 會自動縮放內容到一頁。</p>
+
+      <p>聽起來很複雜對吧?<strong>5 個步驟,每個都要記得位置,而且每次內容變了就要重來。</strong></p>
+
+      <h2 id="solution">一鍵解決:用 Receipt Flash</h2>
+      <p>Receipt Flash 是專門為了解決這些問題而設計的:</p>
+
+      <h3>✅ 自動頁面配置</h3>
+      <p>不用手動設定,我們的 pipeline 會自動選擇最佳頁面大小、方向、邊界。</p>
+
+      <h3>✅ 智能分頁</h3>
+      <p>系統會根據內容自動分頁,絕不切到一半文字、不切到一半圖片、不切到一半表格。</p>
+
+      <h3>✅ 圖片自動縮放</h3>
+      <p>單據照片會自動縮到儲存格大小,保持比例,不超出邊界。</p>
+
+      <h3>✅ 統一排版</h3>
+      <p>所有報告使用相同的排版風格,看起來專業、可讀、統一。</p>
+
+      <h3>✅ Web Link 分享</h3>
+      <p>生成的報告可以直接用連結分享,不用附檔案,對方打開瀏覽器就看得到——不會跑版、不會相容性問題。</p>
+
+      <h3>使用方法(超簡單)</h3>
+      <ol>
+        <li>填好我們的 Excel 模板(或用你自己的 Excel,欄位對應就好)</li>
+        <li>到 <a href="/">receiptflash.com</a> 拖放上傳</li>
+        <li>30 秒內收到報告連結</li>
+        <li>下載 PDF 或直接分享連結</li>
+      </ol>
+
+      <div class="cta">
+        <p>告別 Excel 排版噩夢。試試 Receipt Flash。</p>
+        <a href="/" class="btn btn-accent">免費試用 Receipt Flash →</a>
+      </div>
+
+      <h2 id="faq">常見問題</h2>
+
+      <h3>Q:Receipt Flash 支援所有 Excel 版本嗎?</h3>
+      <p>我們支援 .xlsx(Excel 2007 以後)和 .xls(Excel 2003 以前)。如果你用 Google Sheets 製作,建議另存成 .xlsx 後上傳。</p>
+
+      <h3>Q:報告的排版風格可以自訂嗎?</h3>
+      <p>目前我們提供統一的專業排版。之後會推出付費版,允許自訂 logo、顏色、字型等。</p>
+
+      <h3>Q:我的 Excel 內容很複雜(多張工作表),能處理嗎?</h3>
+      <p>目前我們處理單一工作表的內容。如果你的報表有多張工作表,建議先合併成一張主要工作表,或聯絡我們為你客製。</p>
+
+      <h3>Q:跑版的根本原因是什麼?有辦法從源頭解決嗎?</h3>
+      <p>根本原因是 Excel 的「無限畫布」設計和 PDF 的「固定頁面」設計本質衝突。要從源頭解決,需要重新設計你的工作流程——這正是 Receipt Flash 提供的價值:把混亂的 Excel 輸入,轉換成結構化的報告輸出。</p>
+
+      <p style="margin-top: 40px;">還有其他 Excel 跑版問題嗎?<a href="mailto:support@receiptflash.com">歡迎聯絡我們</a>。或者直接試用 Receipt Flash,看看我們如何幫你一鍵解決。</p>
+    </article>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="../assets/main.js"></script>
+<script src="../_ads/adsense.js"></script>
+</body>
+</html>

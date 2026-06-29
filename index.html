@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>做單快快 Receipt Flash — 上傳 Excel 30 秒出報告</title>
+<meta name="description" content="專為港澳影視製作行業設計的現金支出報告工具。上傳 Excel,30 秒出專業報告。">
+<meta property="og:type" content="product">
+<meta property="og:title" content="做單快快 Receipt Flash — 上傳 Excel 30 秒出報告">
+<meta property="og:description" content="專為港澳影視製作行業設計的現金支出報告工具。上傳 Excel,30 秒出專業報告。">
+<meta property="og:image" content="https://receiptflash.com/_brand/og-image.svg">
+<meta property="og:url" content="https://receiptflash.com/index.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="做單快快 Receipt Flash — 上傳 Excel 30 秒出報告">
+<meta name="twitter:description" content="專為港澳影視製作行業設計的現金支出報告工具。上傳 Excel,30 秒出專業報告。">
+<meta name="twitter:image" content="https://receiptflash.com/_brand/og-image.svg">
+<link rel="icon" type="image/svg+xml" href="/_brand/favicon.svg">
+<link rel="stylesheet" href="assets/style.css">
+
+<!-- Icon sprite (hidden) -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;" aria-hidden="true">
+  <symbol id="icon-excel" viewBox="0 0 64 64"><rect x="6" y="6" width="52" height="52" rx="8" fill="#1d6f42"/><rect x="10" y="10" width="44" height="44" rx="4" fill="#21a366"/><path d="M22 24h20M22 32h20M22 40h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></symbol>
+  <symbol id="icon-shield" viewBox="0 0 64 64"><path d="M32 6L10 14v18c0 14 9 22 22 26 13-4 22-12 22-26V14L32 6z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M22 32l8 8 14-14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-clock" viewBox="0 0 64 64"><circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="3"/><path d="M32 18v14l10 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+  <symbol id="icon-cloud" viewBox="0 0 64 64"><path d="M18 46a12 12 0 010-24 16 16 0 0130-2 10 10 0 014 26H18z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-share" viewBox="0 0 64 64"><circle cx="14" cy="32" r="6" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="14" r="6" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="50" r="6" fill="none" stroke="currentColor" stroke-width="3"/><path d="M20 28l24-12M20 36l24 12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+</svg>
+<style>
+  /* 上傳頁專用樣式 */
+  .upload-hero { padding: 48px 0 24px; }
+  .upload-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 36px;
+    box-shadow: var(--shadow);
+    max-width: 720px;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+  }
+  .upload-zone {
+    border: 2px dashed var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 56px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+    background: var(--primary-soft);
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--primary);
+    background: #dceeff;
+    transform: translateY(-2px);
+  }
+  .upload-zone .icon { font-size: 56px; margin-bottom: 12px; }
+  .upload-zone h3 { color: var(--primary); margin-bottom: 8px; }
+  .upload-zone p { color: var(--text-2); font-size: 14px; margin-bottom: 0; }
+  .upload-zone .browse {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 10px 28px;
+    border-radius: 999px;
+    font-weight: 600;
+    margin-top: 16px;
+  }
+  .upload-zone input[type=file] { display: none; }
+  .file-preview {
+    display: none;
+    margin: 0 0 24px;
+    background: var(--primary-soft);
+    border: 1.5px solid var(--primary);
+    border-radius: var(--radius-sm);
+    padding: 16px 18px;
+    align-items: center;
+    gap: 14px;
+  }
+  .file-preview.show { display: flex; }
+  .file-preview .file-icon { font-size: 32px; }
+  .file-preview .file-info { flex: 1; min-width: 0; }
+  .file-preview .file-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .file-preview .file-size { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+  .file-preview .file-remove {
+    background: none; border: 1.5px solid var(--border);
+    border-radius: 50%; width: 28px; height: 28px;
+    cursor: pointer; color: var(--muted);
+  }
+  .file-preview .file-remove:hover { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
+  .form-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .form-field { flex: 1; }
+  .form-field label { display: block; font-size: 12px; color: var(--text-2); margin-bottom: 4px; font-weight: 600; }
+  .form-section { padding-top: 24px; border-top: 1px solid var(--border); margin-top: 24px; }
+  .form-section:first-of-type { padding-top: 0; border-top: none; margin-top: 0; }
+  .form-section .form-label { font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 12px; }
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--primary) 0%, #1a6fc4 100%);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 16px rgba(46,117,182,.35);
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(46,117,182,.4); }
+  .submit-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+  .submit-btn .spinner {
+    width: 18px; height: 18px;
+    border: 2.5px solid rgba(255,255,255,.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    display: none;
+  }
+  .submit-btn.loading .spinner { display: block; }
+  .submit-btn.loading .btn-text { display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(255,255,255,.92);
+    z-index: 999; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px;
+  }
+  .loading-overlay.show { display: flex; }
+  .loading-spinner {
+    width: 48px; height: 48px;
+    border: 4px solid var(--primary-soft);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  .success-panel { display: none; text-align: center; padding: 40px 0; }
+  .success-panel.show { display: block; }
+  .success-panel .icon { font-size: 64px; margin-bottom: 12px; }
+  .success-panel h2 { color: var(--success); }
+  .success-id {
+    background: var(--primary-soft);
+    border: 1.5px solid var(--primary);
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin: 20px 0;
+    line-height: 1.7;
+    color: var(--text-2);
+  }
+  .success-id strong { color: var(--primary); font-size: 16px; display: block; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<main>
+  <section class="upload-hero">
+    <div class="container">
+      <div class="text-center mb-3">
+        <h1>⚡ 上傳 Excel,30 秒出報告</h1>
+        <p style="font-size: 1.05rem; color: var(--text-2); max-width: 560px; margin: 0 auto;">填好 Excel 模板?直接上傳,我哋幫你生成專業的現金支出報告。</p>
+      </div>
+      <div class="upload-card">
+
+        <div id="upload-form">
+          <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+            <input type="file" id="file-input" accept=".xlsx,.xls" />
+            <div class="icon">📁</div>
+            <h3>拖放或點擊上傳 Excel</h3>
+            <p>支援 .xlsx 格式(請用 Receipt Flash 模板)</p>
+            <span class="browse">選擇檔案</span>
+          </div>
+
+          <div class="file-preview" id="file-preview">
+            <div class="file-icon">📊</div>
+            <div class="file-info">
+              <div class="file-name" id="file-name"></div>
+              <div class="file-size" id="file-size"></div>
+            </div>
+            <button class="file-remove" id="file-remove" title="移除檔案">✕</button>
+          </div>
+
+          <div class="form-section">
+            <div class="form-label">聯絡資料</div>
+            <div class="form-row">
+              <div class="form-field">
+                <label>你的電郵 *</label>
+                <input type="email" id="applicant-email" placeholder="例如:susan@example.com" required />
+              </div>
+              <div class="form-field">
+                <label>你的名字</label>
+                <input type="text" id="applicant-name" placeholder="例如:Susan" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-label">專案資料(可選)</div>
+            <div class="form-row">
+              <div class="form-field">
+                <label>片名 / 專案名稱</label>
+                <input type="text" id="project-name" placeholder="例如:Galaxy 202606" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label>備註</label>
+                <input type="text" id="notes" placeholder="有冇特別需要注意的事項?" />
+              </div>
+            </div>
+          </div>
+
+          <button class="submit-btn" id="submit-btn" onclick="handleSubmit()" disabled>
+            <div class="spinner"></div>
+            <span class="btn-text">⚡ 提交並發送</span>
+          </button>
+        </div>
+
+        <div class="success-panel" id="success-panel">
+          <div class="icon">🎉</div>
+          <h2>已收到!</h2>
+          <p>你的 Excel 已成功上傳,Receipt Flash 團隊會盡快處理。</p>
+          <div class="success-id">
+            <strong id="success-id">REF# RF-000000</strong>
+            📧 報告生成後會第一時間 email 給你。<br>
+            <span style="font-size:11px;color:var(--muted);">一般 1-2 小時內完成,緊急可聯絡做單快快團隊。</span>
+          </div>
+          <button class="btn btn-primary" onclick="resetForm()">✅ 完成,再上傳一個</button>
+        </div>
+
+      </div>
+
+      <p class="text-center muted mt-3" style="font-size: 13px;">
+        第一次用?<a href="/_brand/template-guide.txt" download>下載 Excel 模板指南</a> · 或<a href="mailto:support@receiptflash.com">聯絡我們</a> 索取完整模板。
+      </p>
+
+      <div class="ad-slot" data-ad="side-rectangle"></div>
+    </div>
+  </section>
+
+  <section style="background: var(--surface); padding: 60px 0;">
+    <div class="container">
+      <h2 class="text-center">用戶評價</h2>
+      <p class="lead">真實用戶的心聲。</p>
+      <div class="testimonial-grid">
+        <blockquote class="testimonial">
+          <p>“製作期結案要交 50 幾張單據俾客戶,以前用 Excel 排到半夜。Receipt Flash 30 分鐘搞定,客戶仲以為我自己寫 program。”</p>
+          <footer><strong>Jimmy L.</strong> · 製作統籌 · <span class="muted">M Plus Studio</span></footer>
+        </blockquote>
+        <blockquote class="testimonial">
+          <p>“廣告 agency 結案報表之前要 3 個鐘,依家交俾 Receipt Flash,10 分鐘收到連結,直接 send 俾客戶。”</p>
+          <footer><strong>Susan T.</strong> · Account Director · <span class="muted">/TMP Creative</span></footer>
+        </blockquote>
+        <blockquote class="testimonial">
+          <p>“我唔識 Excel 巨集,但 Receipt Flash 自動幫我排好單據照片同描述,接案報帳變得超簡單。”</p>
+          <footer><strong>Marco W.</strong> · 自由接案攝影師 · <span class="muted">個人 Freelance</span></footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 40px 0; background: var(--bg);">
+    <div class="container">
+      <div class="trust-badges">
+        <div class="badge"><svg class="icon-svg" width="24" height="24" style="color: var(--primary);"><use href="#icon-shield"/></svg><span>Cloudflare 全球 CDN</span></div>
+        <div class="badge"><svg class="icon-svg" width="24" height="24" style="color: var(--success);"><use href="#icon-shield"/></svg><span>HTTPS / TLS 1.3 加密</span></div>
+        <div class="badge"><svg class="icon-svg" width="24" height="24" style="color: var(--accent);"><use href="#icon-clock"/></svg><span>30 天自動刪除</span></div>
+        <div class="badge"><svg class="icon-svg" width="24" height="24" style="color: var(--primary);"><use href="#icon-cloud"/></svg><span>R2 物件儲存</span></div>
+      </div>
+    </div>
+  </section>
+  <script>
+    // Override form submit until /api/upload is wired up
+    (function() {
+      const FORMSPREE_ENDPOINT = (window.RECEIPT_FLASH_CONFIG && window.RECEIPT_FLASH_CONFIG.formspreeEndpoint) || '';
+      const original = window.handleSubmit;
+      window.handleSubmit = async function() {
+        const file = document.getElementById('file-input').files[0];
+        if (!file) { alert('請先選擇檔案'); return; }
+        const email = document.getElementById('applicant-email').value.trim();
+        if (!email) { alert('請填寫電郵地址'); return; }
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!emailOk) { alert('電郵格式不正確'); return; }
+        const name = document.getElementById('applicant-name').value.trim();
+        const project = document.getElementById('project-name').value.trim();
+        const notes = document.getElementById('notes').value.trim();
+
+        const ext = (file.name.split('.').pop() || '').toLowerCase();
+        if (!['xlsx', 'xls'].includes(ext)) { alert('只接受 .xlsx 或 .xls 檔案'); return; }
+
+        const overlay = document.getElementById('loading-overlay');
+        const loadingMsg = document.getElementById('loading-msg');
+        const progressBar = document.getElementById('upload-progress');
+        overlay.classList.add('show');
+        loadingMsg.textContent = '正在上傳 Excel...';
+        if (progressBar) progressBar.style.width = '15%';
+
+        // Try Formspree if endpoint configured, else fallback to mailto
+        if (!FORMSPREE_ENDPOINT) {
+          // mailto fallback (no backend yet)
+          setTimeout(() => { if (progressBar) progressBar.style.width = '100%'; }, 100);
+          const subject = encodeURIComponent('[Receipt Flash] 上傳請求 - ' + file.name);
+          const body = encodeURIComponent(
+            '你好,\n\n我想上傳以下 Excel:\n\n' +
+            '檔案: ' + file.name + ' (' + file.size + ' bytes)\n' +
+            '電郵: ' + email + '\n' +
+            '姓名: ' + name + '\n' +
+            '專案: ' + project + '\n' +
+            '備註: ' + notes + '\n\n' +
+            '(系統提示: 請將 Excel 附件回覆此 email,我哋會手動處理。)\n'
+          );
+          setTimeout(() => {
+            overlay.classList.remove('show');
+            if (progressBar) progressBar.style.width = '0%';
+            window.location.href = 'mailto:support@receiptflash.com?subject=' + subject + '&body=' + body;
+          }, 800);
+          return;
+        }
+
+        // Formspree upload via XHR for progress
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('name', name);
+        formData.append('project', project);
+        formData.append('notes', notes);
+        formData.append('file', file);
+        formData.append('_subject', '[Receipt Flash] ' + file.name);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', FORMSPREE_ENDPOINT);
+        xhr.upload.onprogress = function(e) {
+          if (e.lengthComputable && progressBar) {
+            const pct = Math.round((e.loaded / e.total) * 80) + 15;
+            progressBar.style.width = pct + '%';
+            loadingMsg.textContent = '上傳中 ' + pct + '%';
+          }
+        };
+        xhr.onload = function() {
+          if (progressBar) progressBar.style.width = '100%';
+          loadingMsg.textContent = '處理中...';
+          if (xhr.status >= 200 && xhr.status < 300) {
+            const ref = 'RF-' + Date.now().toString(36).toUpperCase();
+            document.getElementById('success-id').textContent = 'REF# ' + ref;
+            setTimeout(() => {
+              overlay.classList.remove('show');
+              if (progressBar) progressBar.style.width = '0%';
+              document.getElementById('upload-form').style.display = 'none';
+              document.getElementById('success-panel').classList.add('show');
+            }, 500);
+          } else {
+            overlay.classList.remove('show');
+            if (progressBar) progressBar.style.width = '0%';
+            alert('上傳失敗 (' + xhr.status + '),請稍後再試或聯絡 support@receiptflash.com。');
+          }
+        };
+        xhr.onerror = function() {
+          overlay.classList.remove('show');
+          if (progressBar) progressBar.style.width = '0%';
+          alert('網絡錯誤,請檢查連線後再試。');
+        };
+        xhr.send(formData);
+      };
+
+      // Allow Cmd/Ctrl+Enter to submit
+      document.addEventListener('keydown', function(e) {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+          const btn = document.getElementById('submit-btn');
+          if (btn && !btn.disabled) window.handleSubmit();
+        }
+      });
+    })();
+  </script>
+
+  <section style="background: var(--surface); padding: 60px 0;">
+    <div class="container">
+      <h2 class="text-center">三步完成現金支出報告</h2>
+      <p class="lead">告別 Excel 排版噩夢,告別單據照片四散,告別報告趕到半夜。</p>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon"><svg class="icon-svg" width="40" height="40"><use href="#icon-excel"/></svg></div>
+          <h3>1. 填 Excel 模板</h3>
+          <p>用我們的模板,逐項輸入日期/金額/描述,單據照片直接粘到儲存格。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><svg class="icon-svg" style="color: var(--accent);" width="40" height="40"><use href="#icon-clock"/></svg></div>
+          <h3>2. 上傳到這頁</h3>
+          <p>拖進去,寫個名字,按提交。30 秒內我們的系統會自動接手。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><svg class="icon-svg" style="color: var(--success);" width="40" height="40"><use href="#icon-share"/></svg></div>
+          <h3>3. 收到報告</h3>
+          <p>我們處理完,報告連結直接 email 給你。列印、分享、報帳,任你用。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: var(--bg); padding: 60px 0;">
+    <div class="container">
+      <h2 class="text-center">跑版? Receipt Flash 自動解決</h2>
+      <p class="lead">左邊係 Excel 直接轉 PDF 嘅慘況,右邊係我們嘅結果。</p>
+      <div class="text-center">
+        <img src="/_brand/before-after.svg" alt="Excel 跑版 vs Receipt Flash 自動報告對比" style="max-width: 800px; width: 100%; height: auto; border-radius: var(--radius); box-shadow: var(--shadow); margin: 0 auto;" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2 class="text-center">誰適合用</h2>
+      <p class="lead">專為現金支出繁瑣、需要快速整理報告的行業設計。</p>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon"><svg class="icon-svg" style="color: var(--primary);" width="40" height="40"><use href="#icon-clock"/></svg></div>
+          <h3>影視製作</h3>
+          <p>電影、廣告、短片製作公司,日常處理大量零碎現金支出。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><svg class="icon-svg" style="color: var(--accent);" width="40" height="40"><use href="#icon-share"/></svg></div>
+          <h3>廣告代理</h3>
+          <p>Campaign 結束要整理給客戶的支出明細,時間永遠不夠。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><svg class="icon-svg" style="color: var(--success);" width="40" height="40"><use href="#icon-cloud"/></svg></div>
+          <h3>個人接案</h3>
+          <p>Freelancer 要跟客戶報帳,Receipt Flash 讓你 5 分鐘搞定一份專業報告。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<div class="ad-slot" data-ad="header-banner" style="margin: 24px auto; max-width: 728px;"></div>
+
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-spinner"></div>
+  <p id="loading-msg" style="font-weight: 600;">正在上傳...</p>
+  <div class="progress-track"><div class="progress-bar" id="upload-progress"></div></div>
+  <small style="color: var(--muted);">請稍候,唔好關閉視窗 · Cmd/Ctrl+Enter 快速提交</small>
+</div>
+
+<script src="assets/main.js"></script>
+<script src="_ads/adsense.js"></script>
+<script>
+  let selectedFile = null;
+  const fileInput = document.getElementById('file-input');
+  const dropZone = document.getElementById('drop-zone');
+  const filePreview = document.getElementById('file-preview');
+  const fileName = document.getElementById('file-name');
+  const fileSize = document.getElementById('file-size');
+  const fileRemove = document.getElementById('file-remove');
+  const submitBtn = document.getElementById('submit-btn');
+
+  fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) selectFile(e.target.files[0]); });
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); if (e.dataTransfer.files.length > 0) selectFile(e.dataTransfer.files[0]); });
+
+  function selectFile(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (!['xlsx','xls'].includes(ext)) { alert('請上傳 Excel 檔案(.xlsx 或 .xls)'); return; }
+    selectedFile = file;
+    fileName.textContent = file.name;
+    fileSize.textContent = formatSize(file.size);
+    filePreview.classList.add('show');
+    submitBtn.disabled = false;
+  }
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+    return (bytes/(1024*1024)).toFixed(1) + ' MB';
+  }
+  fileRemove.addEventListener('click', () => {
+    selectedFile = null; filePreview.classList.remove('show');
+    submitBtn.disabled = true; fileInput.value = '';
+  });
+
+  async function handleSubmit() {
+    if (!selectedFile) return;
+    const email = document.getElementById('applicant-email').value.trim();
+    if (!email) { alert('請填寫電郵地址'); return; }
+    const overlay = document.getElementById('loading-overlay');
+    const loadingMsg = document.getElementById('loading-msg');
+    overlay.classList.add('show');
+    loadingMsg.textContent = '正在讀取檔案...';
+    const name = document.getElementById('applicant-name').value.trim();
+    const project = document.getElementById('project-name').value.trim();
+    const notes = document.getElementById('notes').value.trim();
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('name', name);
+    formData.append('project', project);
+    formData.append('notes', notes);
+    formData.append('file', selectedFile);
+    loadingMsg.textContent = '正在上傳到雲端...';
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      if (!res.ok) throw new Error('upload failed');
+      const data = await res.json();
+      if (!data.success) throw new Error('server error');
+      document.getElementById('success-id').textContent = 'REF# ' + data.ref;
+    } catch (err) {
+      overlay.classList.remove('show');
+      alert('上傳失敗,請稍後再試,或聯絡做單快快團隊。');
+      console.error(err); return;
+    }
+    overlay.classList.remove('show');
+    document.getElementById('upload-form').style.display = 'none';
+    document.getElementById('success-panel').classList.add('show');
+  }
+
+  function resetForm() {
+    selectedFile = null; filePreview.classList.remove('show');
+    submitBtn.disabled = true; fileInput.value = '';
+    document.getElementById('applicant-email').value = '';
+    document.getElementById('applicant-name').value = '';
+    document.getElementById('project-name').value = '';
+    document.getElementById('notes').value = '';
+    document.getElementById('upload-form').style.display = 'block';
+    document.getElementById('success-panel').classList.remove('show');
+  }
+</script>
+</body>
+</html>
