@@ -75,19 +75,19 @@ export async function onRequestPost(context) {
     if (env.DISCORD_WEBHOOK_URL) {
       const discordPayload = {
         embeds: [{
-          title: `⚡ ReceiptFlash 新單`,
+          title: `📥 New Receipt Flash upload — ${ref}`,
           color: 0x2e75b6,
           fields: [
-            { name: '🔖 REF', value: ref, inline: true },
-            { name: '📎 檔案', value: fileName, inline: true },
-            { name: '📐 大小', value: formatSize(file.size), inline: true },
-            { name: '📧 電郵', value: email || '（未填）', inline: false },
-            { name: '👤 名字', value: name || '（未填）', inline: true },
-            { name: '🎬 專案', value: project || '（未填）', inline: true },
-            { name: '📝 備註', value: notes || '（無）', inline: false },
+            { name: 'Email', value: email || '—', inline: true },
+            { name: 'Name', value: name || '—', inline: true },
+            { name: 'Project', value: project || '—', inline: true },
+            { name: 'File', value: fileName, inline: false },
+            { name: 'Size', value: formatSize(file.size), inline: true },
+            { name: 'Notes', value: notes || '—', inline: false },
+            { name: 'R2 Key', value: fileKey || '(not stored — R2 not bound)', inline: false },
           ],
           timestamp: new Date().toISOString(),
-          footer: { text: 'ReceiptFlash' },
+          footer: { text: 'Receipt Flash' },
         }],
       };
       context.waitUntil(
